@@ -2,11 +2,14 @@ from flask import Flask, request, redirect
 import requests
 import json
 
-app = Flask(__name__)
+from dotenv import dotenv_values #pip
 
-eduzz_email="marcos@agencialaranjeira.com.br"
-eduzz_public_key="80917706"
-eduzz_api_key="766150357cfe88c"
+config=dotenv_values("./gateways/.env")
+eduzz_email:config["eduzz_email"]
+eduzz_public_key:config["eduzz_public_key"]
+eduzz_api_key:config["eduzz_api_key"]
+
+app = Flask(__name__)
 
 @app.route("/gateways/",methods = ['GET'])
 def raiox():

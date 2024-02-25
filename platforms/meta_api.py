@@ -7,12 +7,14 @@ from meta_adset import MetaAdset
 from meta_campaign import MetaCampaign
 from meta_adaccount import MetaAdaccount
 
-access_token="EABTkTFaTdZB4BO97oWYcvVZCaU6LZBKqoPXPyZALIcg4rOJVJBgRdaVgP3S2eZASZC1W4kReCxZCeIMh4dbMxWfNxO7Kr9MmZCmlqepDiMxcZCrOKi3woDXrnv0XYj69kUynlMWfxgpmbUsZAIagF41uZBnZBZBJcnfldHzJxNwkfGZB78UzZAmjMgi7zVvbMZBIzi8ZD";
-monday_token='eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjI1MzUzMTM3NywiYWFpIjoxMSwidWlkIjozNzQwOTk4NSwiaWFkIjoiMjAyMy0wNC0yOFQxODowNDozOS4wMDBaIiwicGVyIjoibWU6d3JpdGUiLCJhY3RpZCI6MTA1NzAyNjUsInJnbiI6InVzZTEifQ.k5lf_2ccOP9fiETIKwaHUha3HDSagT0Qxx7rKk08MWY'
+from dotenv import dotenv_values #pip
+
+config=dotenv_values("./platforms/.env")
+
 
 def get_meta_adaccounts(meta_id):
     fields="fields=name,owned_ad_accounts{name},client_ad_accounts{name}"
-    url=f'https://graph.facebook.com/v16.0/{meta_id}/?{fields}&access_token={access_token}'
+    url=f'https://graph.facebook.com/v16.0/{meta_id}/?{fields}&access_token={config["access_token"]}'
     #print(url)
     ret = requests.get(url)
     meta_adaccounts_data=json.loads(ret.text)
@@ -45,7 +47,7 @@ def get_meta_adsets(meta_adaccount):
     timerange=f'{{"since":"{str(date(today.year, today.month, 1))}","until":"{str(date(today.year, today.month, today.day))}"}}'
 
     #https://graph.facebook.com/v16.0/act_484264493436412/insights?fields=campaign_name,adset_name,spend,campaign_id,adset_id&level=adset&time_increment=all_days&limit=150&time_range={%22since%22:%222023-06-01%22,%22until%22:%222023-06-12%22}&access_token=
-    url=f'https://graph.facebook.com/v16.0/{meta_adaccount.id}/insights?fields=campaign_name,campaign_id,adset_name,adset_id,spend&level=adset&time_increment=all_days&limit=150&time_range={timerange}&access_token={access_token}'
+    url=f'https://graph.facebook.com/v16.0/{meta_adaccount.id}/insights?fields=campaign_name,campaign_id,adset_name,adset_id,spend&level=adset&time_increment=all_days&limit=150&time_range={timerange}&access_token={config["access_token"]}'
     #print(url)
     meta_adset_data = requests.get(url)
     meta_adsets=get_all_adsets_from_insightsAPI(json.loads(meta_adset_data.text)["data"])
@@ -70,7 +72,7 @@ def get_meta_campaigns(meta_adaccount, meta_adsets):
     
     for meta_campaign in meta_campaigns:
         #request adset data from campaign API
-        url=f'https://graph.facebook.com/v16.0/{meta_campaign.id}/?fields=start_time,stop_time,lifetime_budget,name,daily_budget,effective_status,adsets{{name,id,daily_budget,effective_status}}&limit=50&date_preset=this_month&access_token={access_token}'
+        url=f'https://graph.facebook.com/v16.0/{meta_campaign.id}/?fields=start_time,stop_time,lifetime_budget,name,daily_budget,effective_status,adsets{{name,id,daily_budget,effective_status}}&limit=50&date_preset=this_month&access_token={config["access_token"]}'
         #print(url)
         ret = requests.get(url)
         meta_campaign_data=json.loads(ret.text)
@@ -132,7 +134,7 @@ def add_budget_from_adsetsAPI(insights_campaign,meta_campaigns):
 #######################################################################################################
 def request_profile_BM_info(BM_id):
     fields="fields=owned_ad_accounts{name},client_ad_accounts{name}"
-    url=f'https://graph.facebook.com/v16.0/{BM_id}/?{fields}&access_token={access_token}'
+    url=f'https://graph.facebook.com/v16.0/{BM_id}/?{fields}&access_token={config["access_token"]}'
     print(url)
     ret = requests.get(url)
     BM_info=json.loads(ret.text)
@@ -165,7 +167,7 @@ def request_budget_projection(BM_info,include_acts):
         #request adsets from insights API per adset with spend data  
         timerange=f'{{"since":"{str(date(today.year, today.month, 1))}","until":"{str(date(today.year, today.month, today.day))}"}}'
         #https://graph.facebook.com/v16.0/act_484264493436412/insights?fields=campaign_name,adset_name,spend,campaign_id,adset_id&level=adset&time_increment=all_days&limit=150&time_range={%22since%22:%222023-06-01%22,%22until%22:%222023-06-12%22}&access_token=
-        url=f'https://graph.facebook.com/v16.0/{account["id"]}/insights?fields=campaign_name,campaign_id,adset_name,adset_id,spend&level=adset&time_increment=all_days&limit=150&time_range={timerange}&access_token={access_token}'
+        url=f'https://graph.facebook.com/v16.0/{account["id"]}/insights?fields=campaign_name,campaign_id,adset_name,adset_id,spend&level=adset&time_increment=all_days&limit=150&time_range={timerange}&access_token={config["access_token"]}'
         print(url)
         adset_data = requests.get(url)
         adsets=get_all_adsets_from_insightsAPI(json.loads(adset_data.text)["data"])
@@ -186,7 +188,7 @@ def request_budget_projection(BM_info,include_acts):
 
         for campaign in campaigns:
             #request adset data from campaign API
-            url=f'https://graph.facebook.com/v16.0/{campaign.id}/?fields=start_time,stop_time,lifetime_budget,name,daily_budget,effective_status,adsets{{name,id,daily_budget,effective_status}}&limit=50&date_preset=this_month&access_token={access_token}'
+            url=f'https://graph.facebook.com/v16.0/{campaign.id}/?fields=start_time,stop_time,lifetime_budget,name,daily_budget,effective_status,adsets{{name,id,daily_budget,effective_status}}&limit=50&date_preset=this_month&access_token={config["access_token"]}'
             print(url)
             ret = requests.get(url)
             ret_campaign=json.loads(ret.text)
@@ -213,7 +215,7 @@ def request_budget_projection(BM_info,include_acts):
 
         #for campaign in campaigns:
         #    #request adset data from adset API
-        #    url=f'https://graph.facebook.com/v16.0/{account["id"]}/adsets?fields=daily_budget,effective_status,name,spend,campaign{{name,id,daily_budget}}&effective_status=["ACTIVE"]&date_preset=last_30d&access_token={access_token}'
+        #    url=f'https://graph.facebook.com/v16.0/{account["id"]}/adsets?fields=daily_budget,effective_status,name,spend,campaign{{name,id,daily_budget}}&effective_status=["ACTIVE"]&date_preset=last_30d&access_token={config["access_token"]}'
         #    ret = requests.get(url)
         #    ret_adsets=json.loads(ret.text)
         #    print(ret_adsets)

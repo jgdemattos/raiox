@@ -14,11 +14,14 @@ from meta_businessmanager import MetaBusinessmanager
 from google_api import get_google_adaccounts
 from test import get_google_test
 
-slack_token='xoxb-3444750094833-4823892820513-cKQhWYOIdpLtmQqzDm9keHxK'
+
+from dotenv import dotenv_values #pip
+
+config=dotenv_values("./platforms/.env")
+slack_token=config["SLACK_BOT_TOKEN"]
+
 
 app = Flask(__name__)
-access_token="EABTkTFaTdZB4BO97oWYcvVZCaU6LZBKqoPXPyZALIcg4rOJVJBgRdaVgP3S2eZASZC1W4kReCxZCeIMh4dbMxWfNxO7Kr9MmZCmlqepDiMxcZCrOKi3woDXrnv0XYj69kUynlMWfxgpmbUsZAIagF41uZBnZBZBJcnfldHzJxNwkfGZB78UzZAmjMgi7zVvbMZBIzi8ZD";
-monday_token='eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjI1MzUzMTM3NywiYWFpIjoxMSwidWlkIjozNzQwOTk4NSwiaWFkIjoiMjAyMy0wNC0yOFQxODowNDozOS4wMDBaIiwicGVyIjoibWU6d3JpdGUiLCJhY3RpZCI6MTA1NzAyNjUsInJnbiI6InVzZTEifQ.k5lf_2ccOP9fiETIKwaHUha3HDSagT0Qxx7rKk08MWY'
 
 @app.route("/raiox/",methods = ['POST'])
 def raiox():

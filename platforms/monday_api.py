@@ -1,6 +1,11 @@
 import requests
 import json
-monday_token='eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjI1MzUzMTM3NywiYWFpIjoxMSwidWlkIjozNzQwOTk4NSwiaWFkIjoiMjAyMy0wNC0yOFQxODowNDozOS4wMDBaIiwicGVyIjoibWU6d3JpdGUiLCJhY3RpZCI6MTA1NzAyNjUsInJnbiI6InVzZTEifQ.k5lf_2ccOP9fiETIKwaHUha3HDSagT0Qxx7rKk08MWY'
+
+from dotenv import dotenv_values #pip
+
+config=dotenv_values("./platforms/.env")
+monday_token=config["monday_token"]
+
 
 def request_client_data_on_monday(channel_id):
     apiKey = monday_token
