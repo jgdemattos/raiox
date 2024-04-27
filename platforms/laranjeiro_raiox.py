@@ -17,7 +17,7 @@ from test import get_google_test
 
 from dotenv import dotenv_values #pip
 
-config=dotenv_values("./platforms/.env")
+config=dotenv_values("./.env")
 slack_token=config["SLACK_BOT_TOKEN"]
 
 

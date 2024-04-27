@@ -3,7 +3,7 @@ import json
 
 from dotenv import dotenv_values #pip
 
-config=dotenv_values("./platforms/.env")
+config=dotenv_values("./.env")
 monday_token=config["monday_token"]
 
 

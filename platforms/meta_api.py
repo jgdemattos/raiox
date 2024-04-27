@@ -9,13 +9,13 @@ from meta_adaccount import MetaAdaccount
 
 from dotenv import dotenv_values #pip
 
-config=dotenv_values("./platforms/.env")
+config=dotenv_values("./.env")
 
 
 def get_meta_adaccounts(meta_id):
     fields="fields=name,owned_ad_accounts{name},client_ad_accounts{name}"
     url=f'https://graph.facebook.com/v16.0/{meta_id}/?{fields}&access_token={config["access_token"]}'
-    #print(url)
+    print(url)
     ret = requests.get(url)
     meta_adaccounts_data=json.loads(ret.text)
 
