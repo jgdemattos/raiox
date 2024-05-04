@@ -15,7 +15,7 @@ config=dotenv_values("./.env")
 def get_meta_adaccounts(meta_id):
     fields="fields=name,owned_ad_accounts{name},client_ad_accounts{name}"
     url=f'https://graph.facebook.com/v16.0/{meta_id}/?{fields}&access_token={config["access_token"]}'
-    print(url)
+    #print(url)
     ret = requests.get(url)
     meta_adaccounts_data=json.loads(ret.text)
 
@@ -111,9 +111,9 @@ def add_budget_from_adsetsAPI(insights_campaign,meta_campaigns):
                     start_time=datetime.fromisoformat(insights_campaign['start_time'])
                     stop_time=datetime.fromisoformat(insights_campaign['stop_time'])
                     days_campaign_duration=((datetime.date(start_time) - datetime.date(stop_time)).days)*-1
-                    print(lifetime_budget)
-                    print(days_campaign_duration)
-                    print(lifetime_budget/days_campaign_duration)
+                    #print(lifetime_budget)
+                    #print(days_campaign_duration)
+                    #print(lifetime_budget/days_campaign_duration)
                     meta_campaign.set_budget(lifetime_budget,True)
                     meta_campaign.cbo=True
                 #campanha normal                
@@ -127,18 +127,15 @@ def add_budget_from_adsetsAPI(insights_campaign,meta_campaigns):
 
     return 'ok'
 
-#######################################################################################################
-#######################################################################################################
-#######################################################################################################
-#######################################################################################################
-#######################################################################################################
+#################
+
 def request_profile_BM_info(BM_id):
     fields="fields=owned_ad_accounts{name},client_ad_accounts{name}"
     url=f'https://graph.facebook.com/v16.0/{BM_id}/?{fields}&access_token={config["access_token"]}'
-    print(url)
+    #print(url)
     ret = requests.get(url)
     BM_info=json.loads(ret.text)
-    print(BM_info)
+    #print(BM_info)
     return BM_info['owned_ad_accounts']['data']
 
 def add_budget_to_adsets_from_ADSETS(insights_adsets,adsets):
@@ -159,16 +156,16 @@ def request_budget_projection(BM_info,include_acts):
     total_spend_projected=0
 
     for account in BM_info:
-        print(account["id"])
-        print(include_acts)
-        print(account["id"] not in include_acts)
+        #print(account["id"])
+        #print(include_acts)
+        #print(account["id"] not in include_acts)
         if(len(include_acts)>0):
             if account["id"] not in include_acts: continue
         #request adsets from insights API per adset with spend data  
         timerange=f'{{"since":"{str(date(today.year, today.month, 1))}","until":"{str(date(today.year, today.month, today.day))}"}}'
         #https://graph.facebook.com/v16.0/act_484264493436412/insights?fields=campaign_name,adset_name,spend,campaign_id,adset_id&level=adset&time_increment=all_days&limit=150&time_range={%22since%22:%222023-06-01%22,%22until%22:%222023-06-12%22}&access_token=
         url=f'https://graph.facebook.com/v16.0/{account["id"]}/insights?fields=campaign_name,campaign_id,adset_name,adset_id,spend&level=adset&time_increment=all_days&limit=150&time_range={timerange}&access_token={config["access_token"]}'
-        print(url)
+        #print(url)
         adset_data = requests.get(url)
         adsets=get_all_adsets_from_insightsAPI(json.loads(adset_data.text)["data"])
 
@@ -189,7 +186,7 @@ def request_budget_projection(BM_info,include_acts):
         for campaign in campaigns:
             #request adset data from campaign API
             url=f'https://graph.facebook.com/v16.0/{campaign.id}/?fields=start_time,stop_time,lifetime_budget,name,daily_budget,effective_status,adsets{{name,id,daily_budget,effective_status}}&limit=50&date_preset=this_month&access_token={config["access_token"]}'
-            print(url)
+            #print(url)
             ret = requests.get(url)
             ret_campaign=json.loads(ret.text)
             add_budget_from_adsetsAPI(ret_campaign,campaigns)
@@ -207,7 +204,7 @@ def request_budget_projection(BM_info,include_acts):
                     current_account_budget+=campaign.get_budget()
 
         total_spend_projected+=current_account_spend+(current_account_budget*days_left_this_month)
-        print(f"{total_current_spend}+({total_budget}*{days_left_this_month})")
+        #print(f"{total_current_spend}+({total_budget}*{days_left_this_month})")
         #print(f'{total_current_spend}+({total_budget}*{days_left_this_month})')
 
 
@@ -221,9 +218,9 @@ def request_budget_projection(BM_info,include_acts):
         #    print(ret_adsets)
         #    add_budget_to_adsets_from_ADSETS(ret_adsets['data'],adsets)
 
-        print(f'total_current_spend: {total_current_spend}')
-        print(f'total_budget: {total_budget}')
-        print(f'total_spend_projected: {total_spend_projected}')
+        #print(f'total_current_spend: {total_current_spend}')
+        #print(f'total_budget: {total_budget}')
+        #print(f'total_spend_projected: {total_spend_projected}')
     return {
             'total_current_spend': total_current_spend,
             'total_budget': total_budget,

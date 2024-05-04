@@ -71,9 +71,9 @@ class MetaCampaign:
 
     def get_total_budget(self):
         total_budget=0
-        print(f"{self.name} +++++++++ {self.cbo}")
+        #print(f"{self.name} +++++++++ {self.cbo}")
         if(self.cbo):
-            print(f"{self.name} === {self.budget}")
+            #print(f"{self.name} === {self.budget}")
             total_budget=self.budget
         else:
             for adset in self.adsets:

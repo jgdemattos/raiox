@@ -10,7 +10,7 @@ from google_campaign import GoogleCampaign
 def get_google_adaccounts(google_account_id):
 
 
-    config=dotenv_values("./platforms/.env")
+    config=dotenv_values("./.env")
     credentials={
                     "developer_token":config["developer_token"],
                     "refresh_token":config["refresh_token"],
