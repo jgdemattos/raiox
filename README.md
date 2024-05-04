@@ -25,6 +25,10 @@ No escopo atual, o projeto gera dois principais benefícios:
 O escopo do projeto inclui a extração de dados de campanha nas plataforma de mídia Google Ads e Meta Ads. Dados referentes a operação, como KPIs internos, são obtidos na Monday.com(ferramenta de gestão de projetos). 
 Os dados serão disponibilizados para consumo através de "Slash Commands" no Slack(ferramneta de comunicação interna), e em dashboard desenvolvido em Streamlit.
 
+
+
+[Respositório referente ao dashboard em Streamlit](https://github.com/jgdemattos/adops_snapshot_front)
+
 ##  Arquitetura <a name = "arquitetura"></a>
 
 ![Untitled-2024-05-04-1043](https://github.com/jgdemattos/adops_snapshot_front/assets/4052149/9fac6b70-411e-4620-b181-be9d2697497d)
